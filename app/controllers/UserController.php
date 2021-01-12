@@ -59,7 +59,11 @@ class UserController
     $user = $userRepo->findOneBy(array('login' => $login));
 
     if ($user) {
-      $data = array('Login' => $user->getLogin(), 'LastName' => $user->getLastname(), 'FirstName' => $user->getFirstname());
+      $data = array('login' => $user->getLogin(),           'lastName' => $user->getLastname(),
+                    'firstName' => $user->getFirstname(),   'civility' => $user->getCivility(),
+                    'address' => $user->getAddress(),       'city' => $user->getCity(),
+                    'postalCode' => $user->getPostalCode(), 'country' => $user->getCountry(),
+                    'mail' => $user->getMail(),             'phoneNumber' => $user->getPhoneNumber());
       $response->getBody()->write(json_encode($data));
     } else {
       $response->getBody()->write(json_encode(["success" => false]));
