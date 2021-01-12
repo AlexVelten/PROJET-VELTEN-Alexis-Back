@@ -19,8 +19,17 @@ class UserController
     global $em;
 
     $body = $request->getParsedBody();
-    $civility = $body['civility'] ?? "";
     $login = $body['login'] ?? "";
+
+    $userRepo = $em->getRepository('User');
+    $user = $userRepo->findOneBy(array('login' => $login));
+
+    if($user){
+      $response->getBody()->write(json_encode(["success" => false]));
+      return $response->withHeader("Content-Type", "application/json");
+    }
+
+    $civility = $body['civility'] ?? "";
     $password = password_hash($body['password'],PASSWORD_DEFAULT);
     $firstName = $body['firstName'] ?? "";
     $lastName = $body['lastName'] ?? "";
